@@ -47,7 +47,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 subtitle: Text('Skills: Flutter, Mobile Development'),
               ),
               Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Text(
                     'App Version: ${info!.version}',

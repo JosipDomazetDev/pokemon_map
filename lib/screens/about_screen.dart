@@ -28,34 +28,41 @@ class _AboutScreenState extends State<AboutScreen> {
           );
         } else if (snapshot.hasData) {
           final info = snapshot.data;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Developer Information:',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage('assets/profile.jpg'),
-                  radius: 30.0,
-                ),
-                title: Text('Josip Domazet'),
-                subtitle: Text('Skills: Flutter, Mobile Development'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Center(
-                  child: Text(
-                    'App Version: ${info!.version}',
-                    style: const TextStyle(fontSize: 11.0, color: Colors.grey),
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Josip Domazet'),
+            ),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 100,
+                      backgroundImage: AssetImage('assets/profile.jpg'),
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Center(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Skills: Mobile Development & Flutter',
+                      style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text('App Version: ${info!.version}',
+                        style:
+                            const TextStyle(fontSize: 11.0, color: Colors.grey))
+                  ],
+                )),
+              ],
+            ),
           );
         } else {
           return const Center(

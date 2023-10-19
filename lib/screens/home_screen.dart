@@ -37,6 +37,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: pokemonList.length,
                   itemBuilder: (context, index) {
                     final pokemon = pokemonList[index];
+
+                    if (index == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          child: Row(
+                            children: [
+                              Image.network(pokemon.imageUrl,cacheHeight:120 , cacheWidth: 150),
+                              Text(pokemon.displayName)
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
                     return ListTile(
                       leading: Image.network(pokemon.imageUrl),
                       title: Text(pokemon.displayName),

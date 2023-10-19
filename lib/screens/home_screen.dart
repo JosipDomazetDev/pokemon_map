@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     final pokemon = pokemonList[index];
                     return ListTile(
                       leading: Image.network(pokemon.imageUrl),
-                      title: Text(pokemon.name),
+                      title: Text(pokemon.displayName),
                     );
                   },
                 );

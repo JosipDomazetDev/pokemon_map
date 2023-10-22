@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokemon_map/repositories/pokemon_repository.dart';
 import 'package:pokemon_map/screens/about_screen.dart';
+import 'package:pokemon_map/screens/add_pokemon_bottomsheet.dart';
 import 'package:pokemon_map/screens/home_screen.dart';
 import 'package:pokemon_map/screens/map_screen.dart';
 import 'package:pokemon_map/screens/profile_screen.dart';
 
+import 'blocs/pokemon_bloc.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -69,7 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   void _onTabTapped(int index) {
-    // Change the current tab index when a tab is tapped
     setState(() {
       _currentIndex = index;
     });
@@ -77,23 +82,52 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _tabs[_currentIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.map), label: 'Map'),
-          NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
-          NavigationDestination(icon: Icon(Icons.info), label: 'About'),
-        ],
-        onDestinationSelected: _onTabTapped,
-      ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
+    return RepositoryProvider(
+      create: (context) => PokemonRepository(),
+      child: BlocProvider(
+        create: (context) =>
+            PokemonBloc(repository: context.read<PokemonRepository>()),
+        child: Scaffold(
+          body: _tabs[_currentIndex],
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: _currentIndex,
+            destinations: const [
+              NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+              NavigationDestination(icon: Icon(Icons.map), label: 'Map'),
+              NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+              NavigationDestination(icon: Icon(Icons.info), label: 'About'),
+            ],
+            onDestinationSelected: _onTabTapped,
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.miniCenterDocked,
+          floatingActionButton: BlocBuilder<PokemonBloc, PokemonState>(
+            builder: (context, state) {
+              return FloatingActionButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    builder: (contextInner) {
+                      return Container(
+                        height: 500, // Change the height here
+                        child: AddPokemonBottomSheet(
+                            pokemonBloc: context.read<PokemonBloc>()),
+                      );
+                    },
+                  );
+                },
+                child: const Icon(Icons.add),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

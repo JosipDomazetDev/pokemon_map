@@ -5,6 +5,7 @@ import '../model/pokemon.dart';
 
 class PokemonRepository {
   Future<List<Pokemon>> fetchPokemonList() async {
+    print('Fetching Pokémon list...');
     final response = await http
         .get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=151'));
 
@@ -29,5 +30,9 @@ class PokemonRepository {
     } else {
       throw Exception('Failed to load Pokémon list');
     }
+  }
+
+  addPokemon(Pokemon pokemon) {
+    print('Adding Pokémon ${pokemon.name} to the database...');
   }
 }

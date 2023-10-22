@@ -13,6 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<PokemonBloc>().add(FetchPokemonList());
   }
 
   @override
@@ -21,52 +22,56 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('Pokémon List'),
       ),
-      body: RepositoryProvider(
-        create: (context) => PokemonRepository(),
-        child: BlocProvider(
-          create: (context) =>
-              PokemonBloc(repository: context.read<PokemonRepository>())
-                ..add(FetchPokemonList()),
-          child: BlocBuilder<PokemonBloc, PokemonState>(
-            builder: (context, state) {
-              if (state is PokemonLoadingState) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is PokemonLoadedState) {
-                final pokemonList = state.pokemonList;
-                return ListView.builder(
-                  itemCount: pokemonList.length,
-                  itemBuilder: (context, index) {
-                    final pokemon = pokemonList[index];
+      body: buildList(context),
+    );
+  }
 
-                    if (index == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          child: Row(
-                            children: [
-                              Image.network(pokemon.imageUrl,cacheHeight:120 , cacheWidth: 150),
-                              Text(pokemon.displayName)
-                            ],
-                          ),
-                        ),
-                      );
-                    }
+  Widget buildList(BuildContext context) {
+    return BlocConsumer<PokemonBloc, PokemonState>(
+      listener: (context, state) {
+        if (state is PokemonErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${state.error}')),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is PokemonLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is PokemonLoadedState) {
+          final pokemonList = state.pokemonList;
+          return ListView.builder(
+            itemCount: pokemonList.length,
+            itemBuilder: (context, index) {
+              final pokemon = pokemonList[index];
 
-                    return ListTile(
-                      leading: Image.network(pokemon.imageUrl),
-                      title: Text(pokemon.displayName),
-                    );
-                  },
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    child: Row(
+                      children: [
+                        Image.network(pokemon.imageUrl,
+                            cacheHeight: 120, cacheWidth: 150),
+                        Text(pokemon.displayName)
+                      ],
+                    ),
+                  ),
                 );
-              } else if (state is PokemonErrorState) {
-                return Center(child: Text('Error: ${state.error}'));
-              } else {
-                return Container();
               }
+
+              return ListTile(
+                leading: Image.network(pokemon.imageUrl),
+                title: Text(pokemon.displayName),
+              );
             },
-          ),
-        ),
-      ),
+          );
+        } else if (state is PokemonErrorState) {
+          return Center(child: Text('Error: ${state.error}'));
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }

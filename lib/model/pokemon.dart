@@ -1,11 +1,22 @@
 import 'dart:math';
 
+import 'package:hive/hive.dart';
+
+part 'pokemon.g.dart';
+
+@HiveType(typeId: 1)
 class Pokemon {
+  @HiveField(0)
   final int id;
+
+  @HiveField(1)
   final String name;
-  final String imageUrl;
-  late double latitude;
-  late double longitude;
+
+  @HiveField(3)
+  double latitude;
+
+  @HiveField(4)
+  double longitude;
 
   String get displayName {
     return name.isEmpty ? name : name[0].toUpperCase() + name.substring(1);
@@ -14,7 +25,6 @@ class Pokemon {
   Pokemon(
       {required this.id,
       required this.name,
-      required this.imageUrl,
       this.latitude = 0,
       this.longitude = 0});
 
@@ -26,15 +36,20 @@ class Pokemon {
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     final String id = json['id'].toString();
     final String name = json['name'];
-    final String imageUrl =
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png';
 
     return Pokemon(
       id: int.parse(id),
       name: name,
-      imageUrl: imageUrl,
       latitude: generateRandomCoordinate(),
       longitude: generateRandomCoordinate(),
     );
+  }
+
+  get imageUrl {
+    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png';
+  }
+
+  get detailImgUrl {
+    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/$id.svg';
   }
 }

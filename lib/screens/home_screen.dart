@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../blocs/pokemon_bloc.dart';
 import '../repositories/pokemon_repository.dart';
@@ -51,8 +52,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Card(
                     child: Row(
                       children: [
-                        Image.network(pokemon.imageUrl,
-                            cacheHeight: 120, cacheWidth: 150),
+                        SvgPicture.network(
+                          pokemon.detailImgUrl,
+                          semanticsLabel: pokemon.displayName,
+                          width: 150,
+                        ),
+                        SizedBox(width: 24),
+
+                        FadeInImage.assetNetwork(
+                          image: pokemon.detailImgUrl,
+                          placeholder: 'assets/pokeball.png',
+                          width: 100,
+                          height: 100,
+                        ),
                         Text(pokemon.displayName)
                       ],
                     ),
@@ -61,7 +73,18 @@ class _HomeScreenState extends State<HomeScreen> {
               }
 
               return ListTile(
-                leading: Image.network(pokemon.imageUrl),
+                leading: FadeInImage.assetNetwork(
+                    image: pokemon.imageUrl,
+                    placeholder: 'assets/pokeball.png',
+                    width: 50,
+                    height: 50,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/pokeball.png',
+                        width: 50,
+                        height: 50,
+                      );
+                    }),
                 title: Text(pokemon.displayName),
               );
             },

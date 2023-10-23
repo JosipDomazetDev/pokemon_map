@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pokemon_map/repositories/pokemon_repository.dart';
 import 'package:pokemon_map/screens/about_screen.dart';
 import 'package:pokemon_map/screens/add_pokemon_bottomsheet.dart';
 import 'package:pokemon_map/screens/home_screen.dart';
 import 'package:pokemon_map/screens/map_screen.dart';
 import 'package:pokemon_map/screens/profile_screen.dart';
-
 import 'blocs/pokemon_bloc.dart';
+import 'model/pokemon.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
   WidgetsFlutterBinding.ensureInitialized();
+
+  Hive.registerAdapter(PokemonAdapter());
+  await Hive.openBox<Pokemon>('pokemonBox');
+
+
   runApp(const MyApp());
 }
 
@@ -115,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     builder: (contextInner) {
-                      return Container(
+                      return SizedBox(
                         height: 500, // Change the height here
                         child: AddPokemonBottomSheet(
                             pokemonBloc: context.read<PokemonBloc>()),

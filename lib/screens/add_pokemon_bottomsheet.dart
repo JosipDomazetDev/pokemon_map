@@ -101,13 +101,13 @@ class _AddPokemonBottomSheetState extends State<AddPokemonBottomSheet> {
               },
               onChanged: (Object? value) {},
             ),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   final pokemon = Pokemon(
                     id: DateTime.now().microsecondsSinceEpoch,
                     name: _nameController.text,
-                    imageUrl: '',
                     latitude: double.parse(_latitudeController.text),
                     longitude: double.parse(_longitudeController.text),
                   );

@@ -53,6 +53,8 @@ class MapScreen extends StatelessWidget {
       options: const MapOptions(
         initialCenter: LatLng(51.5, 100.09),
         initialZoom: 3,
+        interactionOptions: InteractionOptions(
+            flags: InteractiveFlag.all & ~InteractiveFlag.rotate),
       ),
       children: [
         TileLayer(

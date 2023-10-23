@@ -1,11 +1,17 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
 
 import '../model/pokemon.dart';
 
 class PokemonRepository {
   final _box = Hive.box<Pokemon>('pokemonBox');
+
+  Future<List<Pokemon>> reloadPokemonBox() async {
+    await _box.clear();
+    return await fetchPokemonList();
+  }
 
   Future<List<Pokemon>> fetchPokemonList() async {
     if (_box.isNotEmpty) {
@@ -19,7 +25,7 @@ class PokemonRepository {
 
   Future<List<Pokemon>> _fetchPokemonFromAPI() async {
     final response = await http
-        .get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=151'));
+        .get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=1000'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -27,23 +33,19 @@ class PokemonRepository {
 
       final pokemonList = results
           .asMap()
-          .map((index, pokemonData) => MapEntry(
-              index,
-              Pokemon(
-                id: index + 1,
-                name: pokemonData['name'],
-              )))
+          .map((index, pokemonData) =>
+              MapEntry(index, Pokemon.fromJson(index, pokemonData)))
           .values
           .toList();
+      pokemonList.shuffle();
 
-      return pokemonList;
+      return pokemonList.sublist(0, 250);
     } else {
       throw Exception('Failed to load Pokémon list');
     }
   }
 
   void addPokemon(Pokemon pokemon) {
-    print('Adding Pokémon ${pokemon.name} to the database...');
     _box.add(pokemon);
     fetchPokemonList();
   }

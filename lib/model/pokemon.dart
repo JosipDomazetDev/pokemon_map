@@ -33,15 +33,15 @@ class Pokemon {
     return min + random.nextDouble() * (max - min);
   }
 
-  factory Pokemon.fromJson(Map<String, dynamic> json) {
-    final String id = json['id'].toString();
+  factory Pokemon.fromJson(int index, Map<String, dynamic> json) {
+    final String id = (index + 1).toString();
     final String name = json['name'];
 
     return Pokemon(
       id: int.parse(id),
       name: name,
       latitude: generateRandomCoordinate(),
-      longitude: generateRandomCoordinate(),
+      longitude: generateRandomCoordinate(min: -180, max: 180),
     );
   }
 

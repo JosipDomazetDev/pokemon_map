@@ -65,13 +65,17 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Card(
                 child: Row(
                   children: [
-                    SvgPicture.network(
-                      pokemon.detailImgUrl,
-                      semanticsLabel: pokemon.displayName,
-                      width: 150,
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: SvgPicture.network(
+                        pokemon.detailImgUrl,
+                        semanticsLabel: pokemon.displayName,
+                        width: 90,
+                      ),
                     ),
-                    SizedBox(width: 24),
-                    Text(pokemon.displayName)
+                    const SizedBox(width: 24),
+                    Text(pokemon.displayName,
+                        style: const TextStyle(fontSize: 18))
                   ],
                 ),
               ),

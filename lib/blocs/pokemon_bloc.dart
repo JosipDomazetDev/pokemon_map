@@ -28,6 +28,12 @@ class PokemonLoadedState extends PokemonState {
   PokemonLoadedState(this.pokemonList);
 }
 
+class PokemonAddedState extends PokemonState {
+  final Pokemon addedPokemon;
+
+  PokemonAddedState(this.addedPokemon);
+}
+
 class PokemonErrorState extends PokemonState {
   final String error;
 
@@ -52,13 +58,13 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
       try {
         emit(PokemonLoadingState());
         repository.addPokemon(event.pokemon);
+        emit(PokemonAddedState(event.pokemon));
         final pokemons = await repository.fetchPokemonList();
         emit(PokemonLoadedState(pokemons));
       } catch (error) {
         emit(PokemonErrorState(error.toString()));
       }
     });
-
 
     on<RefreshPokemonList>((event, emit) async {
       try {

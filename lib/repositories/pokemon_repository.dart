@@ -47,6 +47,5 @@ class PokemonRepository {
 
   void addPokemon(Pokemon pokemon) {
     _box.add(pokemon);
-    fetchPokemonList();
   }
 }

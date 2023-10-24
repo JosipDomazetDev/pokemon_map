@@ -54,6 +54,10 @@ class _AddPokemonBottomSheetState extends State<AddPokemonBottomSheet> {
                       if (double.tryParse(value) == null) {
                         return 'Please enter a valid latitude';
                       }
+                      if (double.parse(value) < -90 ||
+                          double.parse(value) > 90) {
+                        return 'Please enter a valid latitude range (-90 to 90)';
+                      }
                       return null;
                     },
                   ),
@@ -70,6 +74,10 @@ class _AddPokemonBottomSheetState extends State<AddPokemonBottomSheet> {
                       }
                       if (double.tryParse(value) == null) {
                         return 'Please enter a valid longitude';
+                      }
+                      if (double.parse(value) < -180 ||
+                          double.parse(value) > 180) {
+                        return 'Please enter a valid longitude range (-180 to 180)';
                       }
                       return null;
                     },

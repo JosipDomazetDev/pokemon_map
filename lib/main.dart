@@ -103,6 +103,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 FlutterNativeSplash.remove();
               });
             }
+
+            if (state is PokemonErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error: ${state.error}')),
+              );
+            }
+
+            if (state is PokemonAddedState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text('Added ${state.addedPokemon.displayName}')),
+              );
+            }
           },
           child: Scaffold(
             body: _tabs[_currentIndex],

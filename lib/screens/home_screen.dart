@@ -31,14 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildBloc(BuildContext context) {
-    return BlocConsumer<PokemonBloc, PokemonState>(
-      listener: (context, state) {
-        if (state is PokemonErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${state.error}')),
-          );
-        }
-      },
+    return BlocBuilder<PokemonBloc, PokemonState>(
       builder: (context, state) {
         return RefreshIndicator(
             onRefresh: () {
@@ -54,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (state is PokemonLoadingState) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is PokemonLoadedState) {
-
       final pokemonList = state.pokemonList;
       return ListView.builder(
         itemCount: pokemonList.length,

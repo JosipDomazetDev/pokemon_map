@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pokemon_map/blocs/login_bloc.dart';
+import 'package:pokemon_map/repositories/login_repository.dart';
 import 'package:pokemon_map/repositories/pokemon_repository.dart';
 import 'package:pokemon_map/screens/about_screen.dart';
 import 'package:pokemon_map/screens/add_pokemon_bottomsheet.dart';
 import 'package:pokemon_map/screens/home_screen.dart';
+import 'package:pokemon_map/screens/login_screen.dart';
 import 'package:pokemon_map/screens/map_screen.dart';
 import 'package:pokemon_map/screens/profile_screen.dart';
+
 import 'blocs/pokemon_bloc.dart';
 import 'model/pokemon.dart';
 
@@ -91,6 +95,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return RepositoryProvider(
+      create: (context) => LoginRepository(),
+      child: BlocProvider(
+        create: (context) =>
+            LoginBloc(repository: context.read<LoginRepository>())
+              ..add(InitializeEvent()),
+        child: BlocConsumer<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is! LoginSuccessState) {
+              FlutterNativeSplash.remove();
+            }
+
+            if (state is LoginErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to login.')),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is LoginSuccessState) {
+              return buildPokeApp();
+            }
+
+            return LoginScreen(bloc: context.read<LoginBloc>());
+          },
+        ),
+      ),
+    );
+  }
+
+  RepositoryProvider<PokemonRepository> buildPokeApp() {
     return RepositoryProvider(
       create: (context) => PokemonRepository(),
       child: BlocProvider(

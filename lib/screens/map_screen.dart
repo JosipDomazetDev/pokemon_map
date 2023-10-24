@@ -15,14 +15,7 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PokemonBloc, PokemonState>(
-      listener: (context, state) {
-        if (state is PokemonErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${state.error}')),
-          );
-        }
-      },
+    return BlocBuilder<PokemonBloc, PokemonState>(
       builder: (context, state) {
         if (state is PokemonLoadingState) {
           return const Center(child: CircularProgressIndicator());

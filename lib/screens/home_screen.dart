@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pokemon_map/model/pokemon.dart';
 import 'package:pokemon_map/screens/widgets/pokemon_image.dart';
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pokémon List'),
+        title: Text('Pokémons'),
       ),
       body: buildBloc(context),
     );
@@ -53,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (state is PokemonLoadingState) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is PokemonLoadedState) {
+
       final pokemonList = state.pokemonList;
       return ListView.builder(
         itemCount: pokemonList.length,

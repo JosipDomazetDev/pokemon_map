@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/pokemon_bloc.dart';
 import '../model/pokemon.dart';

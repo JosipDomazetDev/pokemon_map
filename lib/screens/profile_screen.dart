@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_map/blocs/login_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: () {
                     context.read<LoginBloc>().add(LogoutEvent());
                   },
-                  child: Text('Logout'),
+                  child: const Text('Logout'),
                 ),
               ],
             ),
@@ -66,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
               fontSize: 14.0,
             ),
           ),
-          SizedBox(height: 4.0),
+          const SizedBox(height: 4.0),
           Text(
             'User display name: ${user.displayName}',
             style: TextStyle(
@@ -74,7 +76,7 @@ class ProfileScreen extends StatelessWidget {
               fontSize: 14.0,
             ),
           ),
-          SizedBox(height: 4.0),
+          const SizedBox(height: 4.0),
           Text(
             'User ID: ${user.uid}',
             style: TextStyle(

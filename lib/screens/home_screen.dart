@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pokemon_map/model/pokemon.dart';
 import 'package:pokemon_map/screens/widgets/pokemon_image.dart';
 
 import '../blocs/pokemon_bloc.dart';
-import '../repositories/pokemon_repository.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -24,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pokémons'),
+        title: const Text('Pokémons'),
       ),
       body: buildBloc(context),
     );

@@ -5,7 +5,7 @@ import '../blocs/login_bloc.dart';
 class LoginScreen extends StatefulWidget {
   final LoginBloc bloc;
 
-  LoginScreen({Key? key, required this.bloc}) : super(key: key);
+  const LoginScreen({Key? key, required this.bloc}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 32.0),
+              const SizedBox(height: 32.0),
 
               // Login form
               Card(
@@ -62,13 +62,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Email',
                         ),
                         controller: usernameController,
                       ),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Password',
                         ),
                         obscureText: true,
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
               // Login button
               ElevatedButton(
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   widget.bloc.add(AttemptLoginEvent(
                       usernameController.text, passwordController.text));
                 },
-                child: Text('Login'),
+                child: const Text('Login'),
               ),
             ],
           ),

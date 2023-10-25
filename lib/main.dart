@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF1B5D1B)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1B5D1B)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -84,10 +84,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _tabs = [
-    HomeScreen(),
-    MapScreen(),
-    ProfileScreen(),
-    AboutScreen(),
+    const HomeScreen(),
+    const MapScreen(),
+    const ProfileScreen(),
+    const AboutScreen(),
   ];
 
   int _currentIndex = 0;

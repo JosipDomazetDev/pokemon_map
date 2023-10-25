@@ -2,26 +2,31 @@ import 'package:flutter/material.dart';
 
 import '../blocs/login_bloc.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   final LoginBloc bloc;
 
-  const LoginScreen({Key? key, required this.bloc}) : super(key: key);
+  LoginScreen({Key? key, required this.bloc}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-   //#7BED9F
+    //#7BED9F
     // 👉🏽
     // #D3D3D3
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: RadialGradient(
-            radius: 2.0,
+            radius: 3.0,
             center: Alignment.topLeft,
-            colors: [
-              Color(0xFF7BED9F),
-              Color(0xFFD3D3D3)
-            ],
+            colors: [Color(0xFF7BED9F), Color(0xFF26DAC5)],
           ),
         ),
         child: Padding(
@@ -35,7 +40,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/android/foreground.png',
                         height: 128.0, width: 128.0),
-                    Text('PokéMap',
+                    const Text('PokéMap',
                         style: TextStyle(
                           fontSize: 32.0,
                           fontWeight: FontWeight.bold,
@@ -56,16 +61,18 @@ class LoginScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      TextField(
+                      TextFormField(
                         decoration: InputDecoration(
-                          labelText: 'Username',
+                          labelText: 'Email',
                         ),
+                        controller: usernameController,
                       ),
-                      TextField(
+                      TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Password',
                         ),
                         obscureText: true,
+                        controller: passwordController,
                       ),
                     ],
                   ),
@@ -76,7 +83,8 @@ class LoginScreen extends StatelessWidget {
               // Login button
               ElevatedButton(
                 onPressed: () {
-                  bloc.add(AttemptLoginEvent());
+                  widget.bloc.add(AttemptLoginEvent(
+                      usernameController.text, passwordController.text));
                 },
                 child: Text('Login'),
               ),

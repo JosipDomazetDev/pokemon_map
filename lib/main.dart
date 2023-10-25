@@ -14,10 +14,15 @@ import 'package:pokemon_map/screens/profile_screen.dart';
 
 import 'blocs/pokemon_bloc.dart';
 import 'model/pokemon.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   await Hive.initFlutter();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   Hive.registerAdapter(PokemonAdapter());
   await Hive.openBox<Pokemon>('pokemonBox');

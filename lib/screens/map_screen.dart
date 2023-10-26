@@ -8,10 +8,21 @@ import 'package:pokemon_map/screens/widgets/pokemon_image.dart';
 
 import '../blocs/pokemon_bloc.dart';
 
-class MapScreen extends StatelessWidget {
+class MapScreen extends StatefulWidget {
   const MapScreen({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<MapScreen> createState() => _MapScreenState();
+}
+
+class _MapScreenState extends State<MapScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<PokemonBloc>().add(FetchPokemonList());
+  }
 
   @override
   Widget build(BuildContext context) {

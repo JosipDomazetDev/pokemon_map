@@ -13,9 +13,8 @@ You can explore the application through the
 following [link](https://marvelous-melba-2a655f.netlify.app/#/).
 To log in, please use the provided credentials:
 
-Email: **user@gmail.com**
-
-Password: **123456**
+* Email: **`user@gmail.com`**
+* Password: **123456**
 
 # Technical Details
 
@@ -26,7 +25,7 @@ Password: **123456**
   this [package](https://pub.dev/packages/flutter_map).
 * **User Interface:** The app uses Material Design 3.
 
-<img src="docs/techstack.jpg" width=90% height=90%>
+<img src="docs/techstack.jpg" width=100% height=100%>
 
 #### Credits
 

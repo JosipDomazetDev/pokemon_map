@@ -43,7 +43,14 @@ class LoginRepository {
       // Had to add SHA1 fingerprint to firebase android app (in the firebase console)
       // https://stackoverflow.com/questions/54557479/flutter-and-google-sign-in-plugin-platformexceptionsign-in-failed-com-google?page=1&tab=trending#tab-top
       await _googleSignIn.signOut();
-      final googleSignInAccount = await _googleSignIn.signIn();
+      GoogleSignInAccount? googleSignInAccount;
+
+      if (kIsWeb) {
+        googleSignInAccount = await _googleSignIn.signInSilently();
+        googleSignInAccount ??= await _googleSignIn.signIn();
+      } else {
+        googleSignInAccount = await _googleSignIn.signIn();
+      }
 
       final googleAuth = await googleSignInAccount?.authentication;
 

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pokemon_map/utils/platform_utils.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 import '../blocs/login_bloc.dart';
@@ -107,14 +110,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                         passwordController.text));
                                   },
                                 ),
-                                SignInButton(
-                                  Buttons.googleDark,
-                                  text: "Sign up with Google",
-                                  elevation: 0,
-                                  onPressed: () async {
-                                    widget.bloc.add(AttemptGoogleLoginEvent());
-                                  },
+                                const SizedBox(
+                                  height: 8.0,
                                 ),
+                                if (!PlatformUtils.isWindows)
+                                  SignInButton(
+                                    Buttons.googleDark,
+                                    text: "Sign up with Google",
+                                    elevation: 0,
+                                    onPressed: () async {
+                                      widget.bloc
+                                          .add(AttemptGoogleLoginEvent());
+                                    },
+                                  ),
                                 const SizedBox(
                                   height: 32.0,
                                 ),

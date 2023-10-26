@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "981309715127",
+    "project_id": "flutter-pokemap",
+    "storage_bucket": "flutter-pokemap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981309715127:android:920f37eb1824de09e55332",
+        "android_client_info": {
+          "package_name": "app.josip.pokemon_map"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981309715127-b9dolmkbqdti8sb09omdo6e4ob6mer4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2vXnT7LwGnlT8Zfu6VxyAtN2Sk49__iA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981309715127-b9dolmkbqdti8sb09omdo6e4ob6mer4b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

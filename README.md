@@ -14,7 +14,7 @@ following [link](https://marvelous-melba-2a655f.netlify.app/#/).
 To log in, please use the provided credentials:
 
 * Email: **`user@gmail.com`**
-* Password: **123456**
+* Password: **`123456`**
 
 # Technical Details
 

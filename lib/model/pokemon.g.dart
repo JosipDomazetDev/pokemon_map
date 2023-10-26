@@ -19,6 +19,10 @@ class PokemonAdapter extends TypeAdapter<Pokemon> {
     return Pokemon(
       id: fields[0] as int,
       name: fields[1] as String,
+      height: fields[5] as double,
+      weight: fields[6] as double,
+      types: (fields[7] as List).cast<String>(),
+      stats: (fields[8] as Map).cast<String, int>(),
       latitude: fields[3] as double,
       longitude: fields[4] as double,
     );
@@ -27,7 +31,7 @@ class PokemonAdapter extends TypeAdapter<Pokemon> {
   @override
   void write(BinaryWriter writer, Pokemon obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +39,15 @@ class PokemonAdapter extends TypeAdapter<Pokemon> {
       ..writeByte(3)
       ..write(obj.latitude)
       ..writeByte(4)
-      ..write(obj.longitude);
+      ..write(obj.longitude)
+      ..writeByte(5)
+      ..write(obj.height)
+      ..writeByte(6)
+      ..write(obj.weight)
+      ..writeByte(7)
+      ..write(obj.types)
+      ..writeByte(8)
+      ..write(obj.stats);
   }
 
   @override

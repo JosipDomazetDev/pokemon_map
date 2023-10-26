@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
 part 'pokemon.g.dart';
@@ -18,6 +19,18 @@ class Pokemon {
   @HiveField(4)
   double longitude;
 
+  @HiveField(5)
+  double height;
+
+  @HiveField(6)
+  double weight;
+
+  @HiveField(7)
+  final List<String> types;
+
+  @HiveField(8)
+  final Map<String, int> stats;
+
   String get displayName {
     return name.isEmpty ? name : name[0].toUpperCase() + name.substring(1);
   }
@@ -25,6 +38,10 @@ class Pokemon {
   Pokemon(
       {required this.id,
       required this.name,
+      required this.height,
+      required this.weight,
+      required this.types,
+      required this.stats,
       this.latitude = 0,
       this.longitude = 0});
 
@@ -34,14 +51,35 @@ class Pokemon {
   }
 
   factory Pokemon.fromJson(int index, Map<String, dynamic> json) {
-    final String id = (index + 1).toString();
+    final int id = json['id'];
     final String name = json['name'];
+    final double height = json['height'] / 10;
+    final double weight = json['weight'] / 10;
+    List<String> types = [];
+    Map<String, int> stats = {};
+
+    try {
+      types = (json['types'] as List<dynamic>)
+          .map((typeData) => typeData['type']['name'] as String)
+          .toList();
+      stats = (json['stats'] as List<dynamic>).asMap().map((_, statData) =>
+          MapEntry(statData['stat']['name'] as String,
+              statData['base_stat'] as int));
+    } catch (e) {
+      if (kDebugMode) {
+        print('Failed to parse types and stats: $e');
+      }
+    }
 
     return Pokemon(
-      id: int.parse(id),
+      id: id,
       name: name,
+      height: height,
+      weight: weight,
       latitude: generateRandomCoordinate(),
       longitude: generateRandomCoordinate(min: -180, max: 180),
+      types: types,
+      stats: stats,
     );
   }
 
@@ -50,6 +88,23 @@ class Pokemon {
   }
 
   get detailImgUrl {
-    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/$id.svg';
+    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png";
+  }
+
+  factory Pokemon.createNew(
+      {required int id,
+      required String name,
+      required double latitude,
+      required double longitude}) {
+    return Pokemon(
+      id: id,
+      name: name,
+      height: 0,
+      weight: 0,
+      types: [],
+      stats: {},
+      latitude: latitude,
+      longitude: longitude,
+    );
   }
 }

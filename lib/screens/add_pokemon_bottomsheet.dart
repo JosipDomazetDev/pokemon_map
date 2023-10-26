@@ -112,7 +112,7 @@ class _AddPokemonBottomSheetState extends State<AddPokemonBottomSheet> {
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  final pokemon = Pokemon(
+                  final pokemon = Pokemon.createNew(
                     id: DateTime.now().microsecondsSinceEpoch,
                     name: _nameController.text,
                     latitude: double.parse(_latitudeController.text),

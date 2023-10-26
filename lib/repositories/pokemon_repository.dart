@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -18,32 +19,35 @@ class PokemonRepository {
       return _box.values.toList();
     }
 
-    final pokemonList = await _fetchPokemonFromAPI();
+    List<Pokemon> pokemonList = await _fetchPokemonFromAPI();
     _box.addAll(pokemonList);
     return pokemonList;
   }
 
   Future<List<Pokemon>> _fetchPokemonFromAPI() async {
-    final response = await http
-        .get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=1000'));
+    var rng = Random();
+    var ids = List<int>.generate(1000, (i) => i + 1)..shuffle(rng);
+    ids = ids.sublist(0, 250);
+
+    List<Future<Pokemon>> futures = [];
+    for (var id in ids) {
+      futures.add(_fetchPokemonDetailsFromAPI(id));
+    }
+
+    return await Future.wait(futures);
+  }
+
+  Future<Pokemon> _fetchPokemonDetailsFromAPI(int id) async {
+    final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$id'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final List<dynamic> results = data['results'];
-
-      final pokemonList = results
-          .asMap()
-          .map((index, pokemonData) =>
-              MapEntry(index, Pokemon.fromJson(index, pokemonData)))
-          .values
-          .toList();
-      pokemonList.shuffle();
-
-      return pokemonList.sublist(0, 250);
+      return Pokemon.fromJson(id, data);
     } else {
-      throw Exception('Failed to load Pokémon list');
+      throw Exception('Failed to load Pokémon with id $id');
     }
   }
+
 
   void addPokemon(Pokemon pokemon) {
     _box.add(pokemon);

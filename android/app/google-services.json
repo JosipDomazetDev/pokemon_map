@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "981309715127-pos797momcr77fgbi17or7jndmpkheip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.josip.pokemon_map",
+            "certificate_hash": "7814166a46643cd75ed1732057c9c9999ec097c7"
+          }
+        },
+        {
           "client_id": "981309715127-b9dolmkbqdti8sb09omdo6e4ob6mer4b.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "981309715127-b9dolmkbqdti8sb09omdo6e4ob6mer4b.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "981309715127-g62ii5m2p3oobda7it6kfniqp2607c46.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.josip.pokemonMap"
+              }
             }
           ]
         }

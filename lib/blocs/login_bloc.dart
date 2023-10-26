@@ -13,8 +13,9 @@ class AttemptLoginEvent extends LoginEvent {
   AttemptLoginEvent(this.username, this.password);
 }
 
-class LogoutEvent extends LoginEvent {
-}
+class AttemptGoogleLoginEvent extends LoginEvent {}
+
+class LogoutEvent extends LoginEvent {}
 
 abstract class LoginState {}
 
@@ -40,6 +41,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<AttemptLoginEvent>((event, emit) async {
       UserCredential? userCredential =
           await repository.login(event.username, event.password);
+
+      if (userCredential != null) {
+        emit(LoginSuccessState(userCredential));
+      } else {
+        emit(LoginErrorState());
+      }
+    });
+
+    on<AttemptGoogleLoginEvent>((event, emit) async {
+      UserCredential? userCredential = await repository.signInWithGoogle();
 
       if (userCredential != null) {
         emit(LoginSuccessState(userCredential));

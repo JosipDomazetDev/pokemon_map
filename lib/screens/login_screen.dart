@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 import '../blocs/login_bloc.dart';
 
@@ -17,9 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //#7BED9F
-    // 👉🏽
-    // #D3D3D3
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Login form
               Card(
-                elevation: 8.0,
+                color: Color(0xFFE8FFE8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
                 ),
@@ -63,12 +63,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextFormField(
                         decoration: const InputDecoration(
+                          isDense: true,
                           labelText: 'Email',
                         ),
                         controller: usernameController,
                       ),
                       TextFormField(
                         decoration: const InputDecoration(
+                          isDense: true,
                           labelText: 'Password',
                         ),
                         obscureText: true,
@@ -81,12 +83,26 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 16.0),
 
               // Login button
-              ElevatedButton(
-                onPressed: () {
-                  widget.bloc.add(AttemptLoginEvent(
-                      usernameController.text, passwordController.text));
-                },
-                child: const Text('Login'),
+              Column(
+                children: [
+                  SignInButton(
+                    Buttons.email,
+                    text: "Sign up with email",
+                    elevation: 0,
+                    onPressed: () {
+                      widget.bloc.add(AttemptLoginEvent(
+                          usernameController.text, passwordController.text));
+                    },
+                  ),
+                  SignInButton(
+                    Buttons.googleDark,
+                    text: "Sign up with Google",
+                    elevation: 0,
+                    onPressed: () async {
+                      widget.bloc.add(AttemptGoogleLoginEvent());
+                    },
+                  )
+                ],
               ),
             ],
           ),

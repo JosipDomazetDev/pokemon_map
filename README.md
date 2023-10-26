@@ -1,19 +1,32 @@
-# pokemon_map
+# PokéMap
 
-Maybe a Pokemon spawns near you.
+This Flutter application was created as a part of my university course in Cross-Platform
+Development. It showcases a map featuring randomly selected Pokémon and provides detailed
+information about them in a dedicated view. To access the map, users are required to log in, and
+this authentication process is managed through Firebase.
 
-## Getting Started
+<img src="docs/animated.gif" width=70% height=70%>
 
-This project is a starting point for a Flutter application.
+## Take a Peek
 
-A few resources to get you started if this is your first Flutter project:
+You can explore the application through the following [link](https://marvelous-melba-2a655f.netlify.app/#/).
+To log in, please use the provided credentials:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Sample Email: **user@gmail.com**
+Sample Password: **123456**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Technical Details
 
+* **Architectural Foundation:** The app is designed following the Bloc pattern.
+* **Local Data Storage:** Hive is employed to locally store the Pokémon data.
+* **Authentication:** Firebase is used for authentication.
+* **Maps:** The map is provided by openstreetmap and makes use of
+  this [package](https://pub.dev/packages/flutter_map).
+* **User Interface:** The app uses Material Design 3.
 
-<a href="https://www.flaticon.com/de/kostenlose-icons/pokemon" title="pokémon Icons">Pokémon Icons erstellt von Freepik - Flaticon</a>
+<img src="docs/techstack.jpg" width=70% height=70%>
+
+#### Credits
+
+<a href="https://www.flaticon.com/de/kostenlose-icons/pokemon" title="pokémon Icons">Pokémon Icons
+erstellt von Freepik - Flaticon</a>

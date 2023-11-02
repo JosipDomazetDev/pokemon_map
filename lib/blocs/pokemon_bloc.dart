@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/pokemon.dart';
@@ -16,7 +17,10 @@ class AddPokemon extends PokemonEvent {
 class RefreshPokemonList extends PokemonEvent {}
 
 // States
-abstract class PokemonState {}
+abstract class PokemonState extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
 class PokemonInitialState extends PokemonState {}
 
@@ -26,6 +30,9 @@ class PokemonLoadedState extends PokemonState {
   final List<Pokemon> pokemonList;
 
   PokemonLoadedState(this.pokemonList);
+
+  @override
+  List<Object> get props => [...pokemonList];
 }
 
 class PokemonAddedState extends PokemonState {

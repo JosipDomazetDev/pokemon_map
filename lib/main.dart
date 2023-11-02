@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   RepositoryProvider<PokemonRepository> buildPokeApp() {
     return RepositoryProvider(
-      create: (context) => PokemonRepository(),
+      create: (context) => PokemonRepositoryImpl(),
       child: BlocProvider(
         create: (context) =>
             PokemonBloc(repository: context.read<PokemonRepository>()),

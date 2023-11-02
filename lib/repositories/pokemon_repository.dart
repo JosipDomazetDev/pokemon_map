@@ -6,14 +6,24 @@ import 'package:http/http.dart' as http;
 
 import '../model/pokemon.dart';
 
-class PokemonRepository {
+abstract class PokemonRepository {
+  Future<List<Pokemon>> fetchPokemonList();
+
+  void addPokemon(Pokemon pokemon);
+
+  Future<List<Pokemon>> reloadPokemonBox();
+}
+
+class PokemonRepositoryImpl implements PokemonRepository {
   final _box = Hive.box<Pokemon>('pokemonBox');
 
+  @override
   Future<List<Pokemon>> reloadPokemonBox() async {
     await _box.clear();
     return await fetchPokemonList();
   }
 
+  @override
   Future<List<Pokemon>> fetchPokemonList() async {
     if (_box.isNotEmpty) {
       return _box.values.toList();
@@ -38,7 +48,8 @@ class PokemonRepository {
   }
 
   Future<Pokemon> _fetchPokemonDetailsFromAPI(int id) async {
-    final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$id'));
+    final response =
+        await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$id'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -48,7 +59,7 @@ class PokemonRepository {
     }
   }
 
-
+  @override
   void addPokemon(Pokemon pokemon) {
     _box.add(pokemon);
   }

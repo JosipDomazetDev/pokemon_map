@@ -2,11 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:equatable/equatable.dart';
 
 part 'pokemon.g.dart';
 
 @HiveType(typeId: 1)
-class Pokemon {
+class Pokemon extends Equatable {
   @HiveField(0)
   final int id;
 
@@ -14,16 +15,16 @@ class Pokemon {
   final String name;
 
   @HiveField(3)
-  double latitude;
+  final double latitude;
 
   @HiveField(4)
-  double longitude;
+  final double longitude;
 
   @HiveField(5)
-  double height;
+  final double height;
 
   @HiveField(6)
-  double weight;
+  final double weight;
 
   @HiveField(7)
   final List<String> types;
@@ -35,7 +36,7 @@ class Pokemon {
     return name.isEmpty ? name : name[0].toUpperCase() + name.substring(1);
   }
 
-  Pokemon(
+  const Pokemon(
       {required this.id,
       required this.name,
       required this.height,
@@ -49,6 +50,9 @@ class Pokemon {
     final random = Random();
     return min + random.nextDouble() * (max - min);
   }
+
+  @override
+  List<Object> get props => [id, name, height, weight];
 
   factory Pokemon.fromJson(int index, Map<String, dynamic> json) {
     final int id = json['id'];

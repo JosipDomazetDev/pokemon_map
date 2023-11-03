@@ -2,10 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class LoginRepository {
+abstract class LoginRepository {
+  Future<UserCredential?> createUserIfNotExist(String username, String password);
+  Future<UserCredential?> login(String username, String password);
+  Future<UserCredential?> signInWithGoogle();
+  Future<void> logout();
+}
+
+class LoginRepositoryImpl implements LoginRepository{
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  @override
   Future<UserCredential?> createUserIfNotExist(
       String username, String password) async {
     try {
@@ -22,6 +30,7 @@ class LoginRepository {
     }
   }
 
+  @override
   Future<UserCredential?> login(String username, String password) async {
     try {
       await createUserIfNotExist(username, password);
@@ -38,6 +47,7 @@ class LoginRepository {
     }
   }
 
+  @override
   Future<UserCredential?> signInWithGoogle() async {
     try {
       // Had to add SHA1 fingerprint to firebase android app (in the firebase console)
@@ -65,6 +75,7 @@ class LoginRepository {
     }
   }
 
+  @override
   logout() async {
     await _googleSignIn.signOut();
     await _auth.signOut();

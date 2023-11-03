@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -13,9 +14,8 @@ import 'package:pokemon_map/screens/map_screen.dart';
 import 'package:pokemon_map/screens/profile_screen.dart';
 
 import 'blocs/pokemon_bloc.dart';
-import 'model/pokemon.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'model/pokemon.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -28,11 +28,21 @@ void main() async {
   await Hive.openBox<Pokemon>('pokemonBox');
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  runApp(const MyApp());
+  runApp(MyApp(
+    loginRepository: LoginRepositoryImpl(),
+    pokemonRepository: PokemonRepositoryImpl(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final LoginRepository loginRepository;
+  final PokemonRepository pokemonRepository;
+
+  const MyApp({
+    Key? key,
+    required this.loginRepository,
+    required this.pokemonRepository,
+  }) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -59,13 +69,24 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1B5D1B)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(
+          title: 'Flutter Demo Home Page',
+          loginRepository: loginRepository,
+          pokemonRepository: pokemonRepository),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  final LoginRepository loginRepository;
+  final PokemonRepository pokemonRepository;
+
+  const MyHomePage({
+    super.key,
+    required this.title,
+    required this.loginRepository,
+    required this.pokemonRepository,
+  });
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -100,8 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => LoginRepository(),
+    return RepositoryProvider.value(
+      value: widget.loginRepository,
       child: BlocProvider(
         create: (context) =>
             LoginBloc(repository: context.read<LoginRepository>())
@@ -131,8 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   RepositoryProvider<PokemonRepository> buildPokeApp() {
-    return RepositoryProvider(
-      create: (context) => PokemonRepositoryImpl(),
+    return RepositoryProvider.value(
+      value: widget.pokemonRepository,
       child: BlocProvider(
         create: (context) =>
             PokemonBloc(repository: context.read<PokemonRepository>()),
@@ -162,11 +183,24 @@ class _MyHomePageState extends State<MyHomePage> {
             bottomNavigationBar: NavigationBar(
               selectedIndex: _currentIndex,
               destinations: const [
-                NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-                NavigationDestination(icon: Icon(Icons.map), label: 'Map'),
                 NavigationDestination(
-                    icon: Icon(Icons.person), label: 'Profile'),
-                NavigationDestination(icon: Icon(Icons.info), label: 'About'),
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                    key: Key('homeButton')),
+                NavigationDestination(
+                  icon: Icon(Icons.map),
+                  label: 'Map',
+                  key: Key('mapButton'),
+                ),
+                NavigationDestination(
+                    icon: Icon(Icons.person),
+                    label: 'Profile',
+                    key: Key('profileButton')),
+                NavigationDestination(
+                  icon: Icon(Icons.info),
+                  label: 'About',
+                  key: Key('aboutButton'),
+                ),
               ],
               onDestinationSelected: _onTabTapped,
             ),

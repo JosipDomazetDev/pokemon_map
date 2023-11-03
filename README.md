@@ -24,6 +24,7 @@ To log in, please use the provided credentials:
 * **Maps:** The map is provided by openstreetmap and makes use of
   this [package](https://pub.dev/packages/flutter_map).
 * **User Interface:** The app uses Material Design 3.
+* **Testing:** The app uses Mockito to mock the repository layer.
 
 <img src="docs/techstack.jpg" width=100% height=100%>
 

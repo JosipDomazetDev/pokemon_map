@@ -26,4 +26,12 @@ class PlatformUtils {
       return Platform.isLinux || Platform.isFuchsia || Platform.isWindows || Platform.isMacOS;
     }
   }
+
+  static bool get isTest {
+    if (kIsWeb) {
+      return false;
+    } else {
+      return Platform.environment['FLUTTER_TEST'] == 'true';
+    }
+  }
 }

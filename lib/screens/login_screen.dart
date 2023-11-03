@@ -97,37 +97,40 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          SafeArea(
-                            child: Column(
-                              children: [
+                          Column(
+                            children: [
+                              SignInButton(
+                                Buttons.email,
+                                // WORKAROUND: Overflow when testing (library bug)
+                                text: PlatformUtils.isTest
+                                    ? "Sign up"
+                                    : "Sign up with Email",
+                                elevation: 0,
+                                onPressed: () {
+                                  widget.bloc.add(AttemptLoginEvent(
+                                      usernameController.text,
+                                      passwordController.text));
+                                },
+                              ),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
+                              if (!PlatformUtils.isWindows)
                                 SignInButton(
-                                  Buttons.email,
-                                  text: "Sign up with email",
+                                  Buttons.googleDark,
+                                  text: PlatformUtils.isTest
+                                      ? "Sign up"
+                                      : "Sign up with Google",
+                                  clipBehavior: Clip.antiAlias,
                                   elevation: 0,
-                                  onPressed: () {
-                                    widget.bloc.add(AttemptLoginEvent(
-                                        usernameController.text,
-                                        passwordController.text));
+                                  onPressed: () async {
+                                    widget.bloc.add(AttemptGoogleLoginEvent());
                                   },
                                 ),
-                                const SizedBox(
-                                  height: 8.0,
-                                ),
-                                if (!PlatformUtils.isWindows)
-                                  SignInButton(
-                                    Buttons.googleDark,
-                                    text: "Sign up with Google",
-                                    elevation: 0,
-                                    onPressed: () async {
-                                      widget.bloc
-                                          .add(AttemptGoogleLoginEvent());
-                                    },
-                                  ),
-                                const SizedBox(
-                                  height: 32.0,
-                                ),
-                              ],
-                            ),
+                              const SizedBox(
+                                height: 32.0,
+                              ),
+                            ],
                           ),
                         ],
                       ),
